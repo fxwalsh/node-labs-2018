@@ -8,18 +8,14 @@ dotenv.config();
 const port = process.env.PORT;
 // Configure our HTTP server to respond with Hello World to all requests.
 const server = http.createServer((req, res) => {
-
-  const default_lang = 'en';
+  let lang = req.headers['accept-language'];
+  const defaultLang='en';
+  if (!greeting[lang]) lang=defaultLang;
   const response={
-    lang: default_lang,
-    message: greeting[default_lang],
+    lang: lang,
+    message: greeting[lang],
   };
-  const lang = req.headers['accept-language'];
-  const message = greeting[lang];
-  if (message){
-    response.lang= lang;
-    response.message = message;
-  }
+
   res.writeHead(200, {'Content-Type': 'text/plain',
                       'Content-Language': response.lang});
   res.end(response.message);
