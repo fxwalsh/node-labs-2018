@@ -42,10 +42,10 @@ router.delete('/:id', (req, res) => {
 return contact.phone_number;
 }).indexOf(key);
     if (index > -1) {
-array.splice(index, 1);
-        res.status(200).send({message: 'Contact deleted'});
+contacts.splice(index, 1);
+        res.status(200).send({message: `Deleted contact with phone_number: ${key} `});
     } else {
-      res.status(400).send({message: 'Unable to find Contact. No contact Deleted'});
+      res.status(400).send({message: `Unable to find Contact with phone_number: ${key}. No contact Deleted`});
       }
 });
 
