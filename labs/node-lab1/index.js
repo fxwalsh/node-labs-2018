@@ -12,7 +12,6 @@ const port = process.env.PORT;
 app.use(express.static('public'));
 
 app.use('/api/contacts', contactsRouter);
-app.use(express.static('public'));
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
