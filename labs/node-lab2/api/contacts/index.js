@@ -35,4 +35,18 @@ return contact.phone_number;
       }
 });
 
+// Delete a contact
+router.delete('/:id', (req, res) => {
+     const key = req.params.id;
+     const index = contacts.map((contact)=>{
+return contact.phone_number;
+}).indexOf(key);
+    if (index > -1) {
+array.splice(index, 1);
+        res.status(200).send({message: 'Contact deleted'});
+    } else {
+      res.status(400).send({message: 'Unable to find Contact. No contact Deleted'});
+      }
+});
+
 export default router;
