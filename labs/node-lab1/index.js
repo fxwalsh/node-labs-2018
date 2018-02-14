@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import greeting from './greeting';
 import contactsRouter from './api/contacts';
 
 dotenv.config();
