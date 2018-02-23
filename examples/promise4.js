@@ -1,4 +1,4 @@
-import req from 'http';
+import req from 'https';
 /**
  * gets a URL.
  * @param {string} url url to get.
@@ -30,9 +30,15 @@ function get(url) {
   });
 }
 
-  get('file://posts.json').then((response) => {
-    console.log('Success!', response);
-  }, (error) => {
+  getJSON('https://raw.githubusercontent.com/fxwalsh/node-samples-2018/master/examples/posts.json').then((response) => {
+//  let post = posts.find((posts)=>{
+//    posts.id===1;
+//  });
+  console.log(response.posts[0]);
+  return get(response.posts[0].link);
+}).then((result) => {
+  console.log(`Got link for 1st post! : ${result}`);
+}, (error) => {
     console.error('Failed!', error);
   });
 
@@ -45,3 +51,12 @@ function get(url) {
     const validStatusCodes=[200, 302];
     return validStatusCodes.find((code) => code == statusCode);
   }
+
+  /**
+   * parses Json from promise.
+   * @param {string} url url to get.
+   * @return {JSON} json object
+   */
+function getJSON(url) {
+  return get(url).then(JSON.parse);
+}
