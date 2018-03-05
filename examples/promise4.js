@@ -1,7 +1,7 @@
-import req from 'https';
+import req from 'http';
 /**
  * gets a URL.
- * @param {string} url url to get.
+ * @param {object} url url to get.
  * @param {int} num2 The second number.
  * @return {Promise} a promise that handles the request
  */
@@ -20,7 +20,7 @@ function get(url) {
       });
       // The whole response has been received - Resolve.
       resp.on('end', () => {
-       resolve(data);
+        resolve(data);
       });
     });
     // Handle network errors
@@ -30,33 +30,31 @@ function get(url) {
   });
 }
 
-  getJSON('https://raw.githubusercontent.com/fxwalsh/node-samples-2018/master/examples/posts.json').then((response) => {
-//  let post = posts.find((posts)=>{
-//    posts.id===1;
-//  });
-  console.log(response.posts[0]);
-  return get(response.posts[0].link);
-}).then((result) => {
-  console.log(`Got link for 1st post! : ${result}`);
+getJSON('http://localhost:8080/api/posts').then((response) => {
+  return response.posts.find((post) => post.id == 1);
+}).then((post) => {
+  return get(post.link);
+}).then((htmlResult) => {
+  console.log(`Got link for post 1! : ${htmlResult}`);
 }, (error) => {
-    console.error('Failed!', error);
-  });
+  console.error('Failed!', error);
+});
 
-  /**
-   * checks http status code.
-   * @param {number} statusCode HTTP status code.
-   * @return {boolean} true if acceptable status code
-   */
-  function validStatus(statusCode) {
-    const validStatusCodes=[200, 302];
-    return validStatusCodes.find((code) => code == statusCode);
-  }
-
-  /**
-   * parses Json from promise.
-   * @param {string} url url to get.
-   * @return {JSON} json object
-   */
+/**
+ * parses Json from promise.
+ * @param {string} url url to get.
+ * @return {JSON} json object
+ */
 function getJSON(url) {
   return get(url).then(JSON.parse);
+}
+
+/**
+ * checks http status code.
+ * @param {number} statusCode HTTP status code.
+ * @return {boolean} true if acceptable status code
+ */
+function validStatus(statusCode) {
+  const validStatusCodes = [200, 301];
+  return validStatusCodes.find((code) => code == statusCode);
 }

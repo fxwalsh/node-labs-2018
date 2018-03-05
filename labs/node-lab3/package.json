@@ -1,10 +1,10 @@
 {
-  "name": "node_examples",
+  "name": "node_lab1",
   "version": "1.0.0",
-  "description": "node xamples 1",
+  "description": "node lab 1",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node await1.js",
+    "start": "nodemon --exec babel-node index.js",
     "pretest": "eslint . "
   },
   "author": "fxwalsh",
@@ -16,5 +16,12 @@
     "eslint": "^4.16.0",
     "eslint-config-google": "^0.9.1",
     "nodemon": "^1.14.11"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "lodash": "^4.17.5",
+    "mongoose": "^5.0.8"
   }
 }

@@ -18,5 +18,5 @@ promise.then((result) => {
 });
 
 const doSomethingThatMightFail = ()=>{
-   return result = (Math.random()>.5)? true:false;
+   return (Math.random()>.5)? true:false;
 };
