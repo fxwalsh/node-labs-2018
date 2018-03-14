@@ -8,7 +8,9 @@ import req from 'http';
 function get(url) {
   return new Promise((resolve, reject) => {
     req.get(url, (resp) => {
-      const {statusCode} = resp;
+      const {
+        statusCode,
+      } = resp;
       // reject if status not ok or redirect
       if (!validStatus(statusCode)) {
         reject(Error('Request Failed.\n' +
@@ -30,15 +32,26 @@ function get(url) {
   });
 }
 
-getJSON('http://localhost:8080/api/posts').then((response) => {
-  return response.posts.find((post) => post.id == 1);
-}).then((post) => {
-  return get(post.link);
-}).then((htmlResult) => {
-  console.log(`Got link for post 1! : ${htmlResult}`);
-}, (error) => {
-  console.error('Failed!', error);
-});
+
+getPostLinkHTML('http://localhost:8080/api/posts', 1);
+
+/**
+ * Gets link from hackernews post
+ * @param {string} url url to get.
+ * @param {number} postId Post id.
+ */
+function getPostLinkHTML(url, postId) {
+  getJSON(url).then((response) => {
+    return response.find((post) => post.id == postId);
+  }).then((post) => {
+    return get(post.link);
+  }).then((htmlResult) => {
+    console.log(`Got link for post 1! : ${htmlResult}`);
+  }, (error) => {
+    console.error('Failed!', error);
+  });
+};
+
 
 /**
  * parses Json from promise.

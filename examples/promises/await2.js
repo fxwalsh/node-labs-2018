@@ -1,4 +1,4 @@
-const timeout = function() {
+const promise = function() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       doSomethingThatMightFail() ? resolve('Success') : reject(Error('It broke'));
@@ -6,14 +6,19 @@ const timeout = function() {
   })
 };
 
+const asyncWrapper = fn => {
+    return Promise.resolve(fn)
+      .catch(rejectResult => {return rejectResult.message});
+};
+
 async function doSomethingAsync() {
-  console.log('async thing started')
-
-  let result = await timeout().catch(console.log('Didn\'t go too well'));
-  console.log(`async thing finished ${result}`)
-
+    const result = await asyncWrapper(promise());
+    console.log(result);
 }
-doSomethingAsync().catch(console.log('Didn\'t go too well'));
+
+
+
+doSomethingAsync();
 
 const doSomethingThatMightFail = () => {
   return (Math.random() > .5) ? true : false;

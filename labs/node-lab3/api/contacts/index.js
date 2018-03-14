@@ -1,5 +1,6 @@
 import express from 'express';
 import Contact from './contactModel';
+import _ from 'lodash';
 
 const router = express.Router(); // eslint-disable-line
 
@@ -20,10 +21,13 @@ router.post('/', (req, res) => {
 // Update a contact
 router.put('/:id', (req, res) => {
   if (req.body._id) delete req.body._id;
+  console.log(req.params.id);
   Contact.findById(req.params.id, (err, contact) => {
     if (err) return handleError(res, err);
+    console.log(contact);
     if (!contact) return res.send(404);
     const updated = _.merge(contact, req.body);
+    console.log(updated);
     updated.save((err) => {
       if (err) return handleError(res, err);
       return res.json(200, contact);

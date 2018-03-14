@@ -2,7 +2,6 @@ import req from 'http';
 /**
  * gets a URL.
  * @param {string} url url to get.
- * @param {int} num2 The second number.
  * @return {Promise} a promise that handles the request
  */
 function get(url) {
@@ -42,6 +41,6 @@ function get(url) {
    * @return {boolean} true if acceptable status code
    */
   function validStatus(statusCode) {
-    const validStatusCodes=[200, 302];
+    const validStatusCodes=[200, 301];
     return validStatusCodes.find((code) => code == statusCode);
   }
