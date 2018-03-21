@@ -5,6 +5,10 @@ const CommentSchema = new Schema({
   body: {type: String, required: true},
   author: {type: String, required: true},
   upvotes: {type: Number, default: 0},
+  updated: {
+    type: Date,
+    default: Date.now,
+  },
   });
 
  const PostSchema = new Schema({
@@ -13,5 +17,9 @@ const CommentSchema = new Schema({
    username: {type: String, required: true},
    comments: [CommentSchema],
    upvotes: {type: Number, min: 0, max: 100, default: 0},
+   updated: {
+    type: Date,
+    default: Date.now,
+  },
  });
 export default mongoose.model('posts', PostSchema);

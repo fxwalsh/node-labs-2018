@@ -1,76 +1,75 @@
 import express from 'express';
 import Post from './postsModel';
+import asyncHandler from 'express-async-handler';
 
 const router = express.Router();// eslint-disable-line
 
-router.get('/', (req, res) => {
-  Post.find((err, posts) => {
-    if (err) return handleError(res, err);
-    return res.send(posts);
-  });
-});
+router.get('/', asyncHandler(async (req, res) => {
+    const last_id = req.query.last_id||"ffffffffffffffffffffffff"
+    const posts = await Post.find( { _id: { $lte: last_id } } )
+    .limit( 5 )
+    .sort( '-_id' );
+
+ // const posts = await Post.find();
+  return res.send(posts);
+}));
 
 // Add a post
-router.post('/', (req, res) => {
-     const newPost = req.body;
+router.post('/', asyncHandler(async (req, res) => {
+    const newPost = req.body;
     if (newPost) {
-           Post.create(newPost, (err, post) => {
-              if (err) return handleError(res, err);
-                 return res.status(201).send({post});
-          });
+          const post = await Post.create(newPost);
+          return res.status(201).send({post});
       } else {
          return handleError(res, err);
       }
-});
+}));
 
 // upvote a post
-router.post('/:id/upvotes', (req, res) => {
+router.post('/:id/upvotes', asyncHandler(async (req, res) => {
   const id = req.params.id;
-  Post.findById(id, (err, post) => {
-        if (err) return handleError(res, err);
-        post.upvotes++;
-       post.save((err) => {
-          if (err) return handleError(res, err);
-           return res.status(201).send({post});
-        });
-  } );
-});
+  const post = await Post.findById(id);
+  post.upvotes++;
+  await post.save();
+  return res.status(201).send({post});
+}));
 
 // get post
-router.get('/:id', (req, res) => {
+router.get('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
-    Post.findById(id, (err, post) => {
-        if (err) return handleError(res, err);
-        return res.send({post});
-  } );
-});
+    const post = await Post.findById(id);
+    return res.send({post});
+}));
 
 // add comment
-router.post('/:id/comments', (req, res) => {
+router.post('/:id/comments', asyncHandler( async (req, res) => {
    const id = req.params.id;
    const comment = req.body;
-   Post.findById(id, (err, post)=>{
-     if (err) return handleError(res, err);
-        post.comments.push(comment);
-        post.save((err) => {
-          if (err) return handleError(res, err);
-           return res.status(201).send({post});
-        });
-  });
-});
+   const post = await Post.findById(id);
+   post.comments.push(comment);
+   await post.save();
+   return res.status(201).send({post});
+}));
 
-router.post('/:postId/comments/:commentId/upvotes', (req, res) => {
+// upvote comment
+router.post('/:postId/comments/:commentId/upvotes', asyncHandler( async (req, res) => {
    const commentId = req.params.commentId;
    const postId = req.params.postId;
-   Post.findById( postId, (err, post)=>{
-        if (err) return handleError(res, err);
-           post.comments.id(commentId).upvotes++;
-           post.save((err) => {
-           if (err) return handleError(res, err);
-                return res.status(201).send({post});
-           });
-  });
-});
+   const post = await Post.findById(postId);
+   post.comments.id(commentId).upvotes++;
+   await post.save();
+   return res.status(201).send({post});
+}));
+
+// delete comment
+router.delete('/:postId/comments/:commentId', asyncHandler( async (req, res) => {
+   const commentId = req.params.commentId;
+   const postId = req.params.postId;
+   const post = await Post.findById(postId);
+   post.comments.id(commentId).remove();
+   await post.save();
+   return res.status(201).send({post});
+}));
 
 /**
  * Handle general errors.

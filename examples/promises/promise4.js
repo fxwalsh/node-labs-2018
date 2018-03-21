@@ -1,3 +1,13 @@
+/**
+ * IMPORTANT.
+ * FOR THIS SCRIPT TO RUN, YOU MUST START THE
+ * APP IN /labs/node-lab3 OR /labs/node-lab30-async.
+ * Open a terminal window in /labs/node-lab3 and do:
+ * npm install
+ * npm start
+ */
+
+
 import req from 'http';
 /**
  * gets a URL.

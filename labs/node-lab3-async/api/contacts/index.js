@@ -8,7 +8,6 @@ const router = express.Router(); // eslint-disable-line
 // Get all contacts, using try/catch to handle errors
 router.get('/', async (req, res) => {
   try {
-    //  throw new Error('test');
     const contacts = await Contact.find();
     res.status(200).json(contacts);
   } catch (error) {
@@ -16,6 +15,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Create a contact, using async handler
 router.post('/', asyncHandler(async (req, res) => {
   const contact = await Contact.create(req.body);
   res.status(201).json(contact);
@@ -35,7 +35,6 @@ router.put('/:id', asyncHandler(async (req, res) => {
 
 // Delete a contact
 router.delete('/:id', asyncHandler(async (req, res) => {
-  //  throw new Error('test');
   const contact = await Contact.findById(req.params.id);
   if (!contact) return res.send(404);
   await contact.remove();
