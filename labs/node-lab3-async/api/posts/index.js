@@ -5,8 +5,8 @@ import asyncHandler from 'express-async-handler';
 const router = express.Router();// eslint-disable-line
 
 router.get('/', asyncHandler(async (req, res) => {
-    const last_id = req.query.last_id||"ffffffffffffffffffffffff"
-    const posts = await Post.find( { _id: { $lte: last_id } } )
+    const lastId = req.query.lastId||'ffffffffffffffffffffffff';
+    const posts = await Post.find( {_id: {$lte: lastId}})
     .limit( 5 )
     .sort( '-_id' );
 

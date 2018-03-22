@@ -1,6 +1,10 @@
 {
+  "extends": "google",
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+  },
     "env": {
-        "browser": true,
         "node": true
     },
 
@@ -14,6 +18,10 @@
 
     "plugins": [
         "react"
-    ]
+    ],
+"rules": {
+    "max-len": [2, 120, 8]
+  }
 }
+
 
