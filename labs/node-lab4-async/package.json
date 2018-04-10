@@ -1,0 +1,38 @@
+{
+  "name": "node_lab1",
+  "version": "1.0.0",
+  "description": "node lab 1",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon --ignore hackerNews/* --exec babel-node index.js",
+    "test": "cross-env NODE_ENV=test mocha --require babel-core/register --require babel-polyfill --reporter mochawesome --exit",
+    "pretest": "eslint *.js ./api/*.js ./test/*.js"
+  },
+  "author": "fxwalsh",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.16.0",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^5.0.5",
+    "mochawesome": "^3.0.2",
+    "mockgoose": "^7.3.5",
+    "nodemon": "^1.14.11",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cross-env": "^5.1.4",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-async-handler": "^1.0.4",
+    "lodash": "^4.17.5",
+    "mongoose": "^5.0.8",
+    "save-dev": "^2.0.0"
+  }
+}
