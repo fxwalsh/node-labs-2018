@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import * as api from './api';
 import { Link } from 'react-router';
+import {Button} from 'react-bootstrap';
 
 class Form extends React.Component {
   state = {title: '', link: ''};
@@ -93,27 +94,40 @@ class NewsList extends React.Component {
 }
 
 class HackerApp extends React.Component {
-
  state = {posts: [{}]};
  async componentDidMount () {
+   try{
          const resp = await api.getAll();
          this.setState({
-                  posts: resp
+                  posts: resp,
+                  isHidden: false
                 });
+
+      } catch (e){
+        this.setState({
+                 isHidden: true
+               });
+      }
  };
 
   addPost = async (title, link) => {
-    const resp = await api.add(title,link);
+    try{
+    const resp = await api.add(title, link);
     const newPost = {"id":resp.id,"title":title,"link":link,"upvotes":0, "comments":[]};
     this.setState({posts: this.state.posts.concat([newPost])});
+  } catch(e){
+    alert(e);
+  }
   };
 
-  incrementUpvote = (id) => {
-    api.upvote(id).then(resp=> {
-           var upvotedPost = _.find(this.state.posts, post=>post.id === id);
-           upvotedPost.upvotes++;
-           this.setState({})
-         }) ;
+  incrementUpvote = async (id) => {
+  try{
+    await api.upvote(id)
+    var upvotedPost = _.find(this.state.posts, post=>post.id === id);
+    upvotedPost.upvotes++;
+    this.setState({})} catch(e){
+      alert(`failed to upvote post ${id}: ${e}`);
+    }
   };
 
   render() {
@@ -121,8 +135,9 @@ class HackerApp extends React.Component {
           post.upvotes);
     return (
       <div >
-       <NewsList posts={posts}
-            upvoteHandler={this.incrementUpvote} />
+      {this.state.isHidden &&  <Button href="/login">Login/Signup</Button>}
+      {!this.state.isHidden && <NewsList posts={posts}
+            upvoteHandler={this.incrementUpvote} />}
        <Form addHandler={this.addPost} />
      </div>
     );

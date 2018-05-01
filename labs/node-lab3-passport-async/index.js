@@ -9,7 +9,7 @@ import {loadPosts} from './postsData';
 import passport from 'passport';
 
 
-dotenv.config();
+dotenv.config(); 
 
 const app = express();
 

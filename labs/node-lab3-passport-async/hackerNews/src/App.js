@@ -98,7 +98,7 @@ class HackerApp extends React.Component {
  async componentDidMount () {
          const resp = await api.getAll();
          this.setState({
-                  posts: resp
+                  posts: resp.posts
                 });
  };
 

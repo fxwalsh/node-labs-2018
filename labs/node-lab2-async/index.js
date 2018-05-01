@@ -13,7 +13,7 @@ const port = process.env.PORT;
 // configure body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(express.static('public'));
+app.use(express.static('public')); 
 
 app.use('/api/contacts', contactsRouter);
 app.use('/api/posts', postsRouter);
